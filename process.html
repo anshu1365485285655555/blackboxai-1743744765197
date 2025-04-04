@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing - AI Design Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .progress-bar {
+            background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+            background-size: 200% 100%;
+            animation: gradient 2s ease infinite;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex items-center">
+    <div class="container mx-auto px-4 max-w-md">
+        <div class="text-center">
+            <div class="w-24 h-24 mx-auto mb-8 rounded-full bg-blue-900/20 flex items-center justify-center pulse">
+                <i class="fas fa-magic text-4xl text-blue-400"></i>
+            </div>
+            <h1 class="text-3xl font-bold mb-4">Generating Designs</h1>
+            <p class="text-gray-300 mb-8">Our AI is creating unique design variations based on your image.</p>
+            
+            <div class="mb-8">
+                <div class="h-2.5 bg-gray-700 rounded-full overflow-hidden mb-2">
+                    <div id="progressBar" class="progress-bar h-full rounded-full" style="width: 0%"></div>
+                </div>
+                <p id="progressText" class="text-sm text-gray-400">Initializing AI models...</p>
+            </div>
+
+            <div class="bg-gray-800/50 rounded-lg p-4 mb-8">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium">Estimated time remaining:</span>
+                    <span id="timeRemaining" class="text-sm font-bold">About 1 minute</span>
+                </div>
+                <div class="flex items-center space-x-2 text-sm text-gray-400">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Processing may take longer for high-resolution images</span>
+                </div>
+            </div>
+
+            <button onclick="window.location.href='index.html'" class="text-gray-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to upload
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Simulate progress
+        let progress = 0;
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const timeRemaining = document.getElementById('timeRemaining');
+        
+        const messages = [
+            "Analyzing image composition...",
+            "Identifying key design elements...",
+            "Generating color palettes...",
+            "Creating layout variations...",
+            "Applying artistic styles...",
+            "Finalizing designs..."
+        ];
+
+        const interval = setInterval(() => {
+            progress += Math.random() * 10;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                setTimeout(() => {
+                    window.location.href = 'results.html';
+                }, 1000);
+            }
+            
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = messages[Math.min(Math.floor(progress/20), messages.length-1)];
+            timeRemaining.textContent = `About ${Math.max(1, Math.floor((100-progress)/30))} minute${Math.floor((100-progress)/30) !== 1 ? 's' : ''}`;
+        }, 800);
+    </script>
+</body>
+</html>
