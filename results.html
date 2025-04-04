@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Designs - AI Design Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .design-card:hover .download-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .download-btn {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.2s ease;
+        }
+        .design-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-12">
+        <header class="text-center mb-12">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Your Generated Designs</h1>
+            <p class="text-gray-600">We've created these unique variations based on your image</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Design Card 1 -->
+            <div class="design-card bg-white rounded-xl shadow-md overflow-hidden relative">
+                <div class="relative">
+                    <img id="design1" src="" class="w-full h-64 object-cover">
+                    <span class="design-badge">Modern</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-2">Minimalist Layout</h3>
+                    <p class="text-gray-600 text-sm mb-4">Clean lines and ample white space</p>
+                    <button class="download-btn w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
+                        <i class="fas fa-download mr-2"></i> Download
+                    </button>
+                </div>
+            </div>
+
+            <!-- Design Card 2 -->
+            <div class="design-card bg-white rounded-xl shadow-md overflow-hidden relative">
+                <div class="relative">
+                    <img id="design2" src="" class="w-full h-64 object-cover">
+                    <span class="design-badge">Vibrant</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-2">Color Pop Version</h3>
+                    <p class="text-gray-600 text-sm mb-4">Enhanced saturation and contrast</p>
+                    <button class="download-btn w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
+                        <i class="fas fa-download mr-2"></i> Download
+                    </button>
+                </div>
+            </div>
+
+            <!-- Design Card 3 -->
+            <div class="design-card bg-white rounded-xl shadow-md overflow-hidden relative">
+                <div class="relative">
+                    <img id="design3" src="" class="w-full h-64 object-cover">
+                    <span class="design-badge">Artistic</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-2">Painterly Effect</h3>
+                    <p class="text-gray-600 text-sm mb-4">Oil painting style transformation</p>
+                    <button class="download-btn w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
+                        <i class="fas fa-download mr-2"></i> Download
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 text-center">
+            <button onclick="window.location.href='index.html'" 
+                    class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-3 px-8 rounded-lg inline-flex items-center">
+                <i class="fas fa-redo mr-2"></i> Generate More Designs
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Display AI-generated results
+        const aiResults = JSON.parse(sessionStorage.getItem('aiResults'));
+        if (aiResults && aiResults.result) {
+            // In a full implementation, we would receive and display multiple variations
+            // For now showing the same result in all slots as example
+            const base64Image = `data:image/jpeg;base64,${aiResults.result}`;
+            document.getElementById('design1').src = base64Image;
+            document.getElementById('design2').src = base64Image;
+            document.getElementById('design3').src = base64Image;
+            
+            // Update design titles based on their styles
+            document.querySelector('#design1 h3').textContent = 'Modern Variation';
+            document.querySelector('#design2 h3').textContent = 'Vibrant Variation';
+            document.querySelector('#design3 h3').textContent = 'Artistic Variation';
+        } else {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg';
+            toast.innerHTML = 'No AI results found. Please try again.';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Download functionality
+        document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const card = this.closest('.design-card');
+                const title = card.querySelector('h3').textContent;
+                
+                // Create a toast notification
+                const toast = document.createElement('div');
+                toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center';
+                toast.innerHTML = `
+                    <i class="fas fa-check-circle mr-2"></i>
+                    ${title} downloaded successfully!
+                `;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
+            });
+        });
+    </script>
+</body>
+</html>
